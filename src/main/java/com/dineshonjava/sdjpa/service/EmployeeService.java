@@ -48,14 +48,17 @@ public class EmployeeService {
 		return "sucess";
 		
 	}
-
-	public List<EmployeeDto> read(Integer id) {
+	@Transactional
+	public List<EmployeeDto> read(Integer id) throws Exception {
 		
 		Employee employee=employeeRepository.findOne(id);
 		
 		List<EmployeeDto> employeeList=new ArrayList<>();
 		
-		
+		if(employee.getPkId()==null)
+		{
+			throw new Exception("the user is not avilable");
+		}
 		EmployeeDto employeeDto=new EmployeeDto();
 		employeeDto.setBirthDate(employee.getBirthDate());
 		employeeDto.setEmail(employee.getEmail());
@@ -73,7 +76,7 @@ public class EmployeeService {
 		
 		return employeeList;
 	}
-
+	@Transactional
 	public String update(Integer id, EmployeeDto dto) {
 		Employee employee=employeeRepository.findOne(id);
 
@@ -85,7 +88,7 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 		return "update success";
 	}
-
+	@Transactional
 	public String delete(Integer id) {
 		Employee employee=employeeRepository.findOne(id);
 		
@@ -94,6 +97,28 @@ public class EmployeeService {
 		employeeRepository.save(employee);
 		
 		return "deactivated";
+	}
+	@Transactional
+	public List<EmployeeDto> readAll() {
+Iterable<Employee> employeelist=employeeRepository.findAll();
+List<EmployeeDto> employeeList=new ArrayList<>();
+for(Employee e1:employeelist)
+{
+	EmployeeDto employeeDto=new EmployeeDto();
+	employeeDto.setBirthDate(e1.getBirthDate());
+	employeeDto.setEmail(e1.getEmail());
+	employeeDto.setFirstName(e1.getFirstName());
+	employeeDto.setLname(e1.getLname());
+	employeeDto.setFlag(e1.getFlag());
+	employeeDto.setPinCode(e1.getPinCode());
+	employeeDto.setPkId(e1.getPkId());
+	employeeList.add(employeeDto);
+}
+return employeeList;
+		
+		
+		
+		
 	}
 	
 	

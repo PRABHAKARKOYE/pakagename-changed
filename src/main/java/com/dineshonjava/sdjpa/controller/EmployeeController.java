@@ -40,8 +40,15 @@ public class EmployeeController {
 	@RequestMapping(value="/read",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<EmployeeDto>> read(@PathVariable("id") Integer id) {
+	public ResponseEntity<List<EmployeeDto>> read(@PathVariable("id") Integer id) throws Exception {
 		List<EmployeeDto> employeeDto = employeeService.read(id);
+		return new ResponseEntity<List<EmployeeDto>>(employeeDto, HttpStatus.OK);
+	}
+	@RequestMapping(value="/readall",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<EmployeeDto>> readall() throws Exception {
+		List<EmployeeDto> employeeDto = employeeService.readAll();
 		return new ResponseEntity<List<EmployeeDto>>(employeeDto, HttpStatus.OK);
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
